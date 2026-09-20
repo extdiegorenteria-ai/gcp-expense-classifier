@@ -1,0 +1,16 @@
+{
+  "specversion": "1.0",
+  "id": "12345678-1234-1234-1234-1234567890ab",
+  "source": "//storage.googleapis.com/projects/_/buckets/mi-proyecto-gastos-raw",
+  "type": "google.cloud.storage.object.v1.finalized",
+  "datacontenttype": "application/json",
+  "time": "2026-09-20T14:00:00.000Z",
+  "data": {
+    "bucket": "mi-proyecto-gastos-raw",
+    "name": "inbox/ticket_supermercado_001.pdf",
+    "contentType": "application/pdf",
+    "size": "1048576",
+    "timeCreated": "2026-09-20T14:00:00.000Z",
+    "updated": "2026-09-20T14:00:00.000Z"
+  }
+}
