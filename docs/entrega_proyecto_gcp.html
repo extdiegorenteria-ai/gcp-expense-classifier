@@ -274,14 +274,16 @@
     A través del conector nativo de BigQuery, Looker Studio presenta un reporte financiero en tiempo real que clasifica gastos por categorías, compara contra presupuestos mensuales y detecta picos inusuales de gasto.</p>
   </div>
 
-  <h2>5. Infraestructura como Código (Terraform)</h2>
+  <h2>5. Infraestructura como Código Modular (Terraform)</h2>
   <p>
-    Toda la solución se encuentra completamente codificada bajo Terraform en el repositorio, garantizando el despliegue automatizado y la reproducibilidad de la infraestructura en cualquier proyecto de Google Cloud:
+    Toda la infraestructura se diseñó siguiendo el estándar de producción mediante separación modular de responsabilidades:
   </p>
   <ul>
-    <li><code>terraform/main.tf</code>: Aprovisionamiento de buckets GCS, tabla particionada de BigQuery, Service Account con IAM mínimo y Cloud Function v2.</li>
-    <li><code>terraform/variables.tf</code> y <code>outputs.tf</code>: Parametrización y exportación de endpoints y nombres de recursos.</li>
-    <li><code>src/main.py</code>: Código Python 3.11 con SDKs oficiales de Google Cloud y Vertex AI.</li>
+    <li><code>main.tf</code> & <code>services.tf</code>: Providers y activación de APIs de GCP.</li>
+    <li><code>storage.tf</code> & <code>bigquery.tf</code>: Landing zone en GCS y Data Warehouse particionado.</li>
+    <li><code>iam.tf</code>: Principio de menor privilegio para la Service Account y Eventarc.</li>
+    <li><code>function.tf</code>: Definición serverless de Cloud Functions v2 y Eventarc.</li>
+    <li><code>variables.tf</code> & <code>outputs.tf</code>: Parametrización y exportación de endpoints.</li>
   </ul>
 
   <h2>6. Cumplimiento del Free Tier y Costos</h2>

@@ -122,16 +122,26 @@ CLUSTER BY categoria, moneda;
 .
 ├── README.md               # Documento central del proyecto y arquitectura
 ├── .gitignore              # Exclusiones de Git
-├── terraform/              # Infraestructura como Código (IaC)
-│   ├── main.tf             # Definición de recursos (GCS, BQ, Function, IAM)
+├── terraform/              # Infraestructura como Código (IaC modular)
+│   ├── main.tf             # Provider Google y versiones
+│   ├── services.tf         # Habilitación de APIs de GCP
+│   ├── storage.tf          # Buckets de Cloud Storage (raw e inbox)
+│   ├── bigquery.tf         # Dataset y tabla particionada
+│   ├── iam.tf              # Service Accounts y políticas de mínimo privilegio
+│   ├── function.tf         # Cloud Function v2 y trigger Eventarc
 │   ├── variables.tf        # Variables configurables (project_id, region)
-│   ├── outputs.tf          # Salidas útiles post-despliegue
+│   ├── outputs.tf          # Salidas exportadas (endpoints, buckets, tabla)
 │   └── terraform.tfvars.example
 ├── src/                    # Código fuente de la Cloud Function
-│   ├── main.py             # Lógica de parsing, llamada a Vertex y carga a BQ
-│   └── requirements.txt    # Dependencias de Python
-└── tests/                  # Datos de prueba y validación
-    └── sample_receipt.json # Simulación de evento de entrada
+│   ├── main.py             # Lógica de parsing, llamada a Vertex AI y carga a BQ
+│   └── requirements.txt    # Dependencias oficiales de Python
+├── scripts/                # Scripts de automatización y entrega
+│   ├── build_deliverable_pdf.py # Compilador de PDF de entrega oficial
+│   └── generate_sample_ticket.py # Generador de tickets de prueba
+└── tests/                  # Datos y muestras de prueba
+    ├── sample_event.json   # Simulación de CloudEvent
+    ├── sample_extracted_row.json # Contrato de datos en BigQuery
+    └── sample_ticket.jpg   # Imagen de comprobante de prueba procesada
 ```
 
 ---
@@ -140,6 +150,6 @@ CLUSTER BY categoria, moneda;
 
 La solución fue concebida para operar dentro del **GCP Free Tier**:
 - **Cloud Storage:** 5 GB/mes incluidos de forma gratuita en regiones US.
-- **Cloud Functions:** 2 millones de invocaciones gratuitas mensuales.
+- **Cloud Functions:** 2 millones de invocaciones gratuitas mensuales y escala a cero (`min_instance_count = 0`).
 - **BigQuery:** 10 GB de almacenamiento mensual y 1 TB de consultas sin costo.
-- **Vertex AI (Gemini 1.5 Flash):** Facturación por consumo. Con un costo de aprox. $0.075 por millón de tokens de entrada, procesar 500 comprobantes mensuales equivale a menos de **$0.05 USD**, cubierto enteramente por los créditos de cortesía de GCP.
+- **Vertex AI (Gemini 2.5 Flash):** Facturación por consumo. Con un costo de aprox. $0.075 por millón de tokens de entrada, procesar 500 comprobantes mensuales equivale a menos de **$0.05 USD**, cubierto enteramente por los créditos de cortesía de GCP.
