@@ -153,3 +153,38 @@ La solución fue concebida para operar dentro del **GCP Free Tier**:
 - **Cloud Functions:** 2 millones de invocaciones gratuitas mensuales y escala a cero (`min_instance_count = 0`).
 - **BigQuery:** 10 GB de almacenamiento mensual y 1 TB de consultas sin costo.
 - **Vertex AI (Gemini 2.5 Flash):** Facturación por consumo. Con un costo de aprox. $0.075 por millón de tokens de entrada, procesar 500 comprobantes mensuales equivale a menos de **$0.05 USD**, cubierto enteramente por los créditos de cortesía de GCP.
+
+---
+
+## 8. Evidencia de Ejecución en Vivo (Prueba E2E)
+
+Se realizó una prueba en producción subiendo el ticket físico [`tests/sample_ticket.jpg`](file:///Users/diegoalonsorenteriavidaurre/Documents/Developer/Proyectos/learn-freelos/gcp-expense-classifier/tests/sample_ticket.jpg) al bucket de Cloud Storage `gs://gcp-expense-darv-6849-gastos-raw/inbox/`.
+
+Eventarc activó la Cloud Function de 2da generación, **Gemini 2.5 Flash** procesó la imagen extrayendo las entidades con 95% de confianza, y los datos se insertaron exitosamente en BigQuery.
+
+### Consulta de Verificación en BigQuery
+```sql
+SELECT 
+  fecha_gasto, 
+  comercio, 
+  categoria, 
+  moneda, 
+  monto_total, 
+  monto_impuesto, 
+  confianza_extraccion,
+  fecha_procesamiento
+FROM `gcp-expense-darv-6849.gastos.gastos_clasificados`;
+```
+
+### Registro Extraído y Almacenado
+| Campo | Valor Obtenido en BigQuery |
+| :--- | :--- |
+| **Fecha de Gasto** | `2026-09-18` |
+| **Comercio** | `RESTAURANTE EL BUEN SABOR` |
+| **Categoría Asignada** | `Alimentacion` |
+| **Moneda** | `PEN` |
+| **Monto Total Facturado** | `45.00` |
+| **Monto Impuesto (IGV 18%)**| `6.86` |
+| **Confianza del Modelo** | `0.95` (95%) |
+| **Archivo Origen (Auditoría)** | `gs://gcp-expense-darv-6849-gastos-raw/inbox/ticket_restaurante_001.jpg` |
+

@@ -294,8 +294,55 @@
     <li><strong>Almacenamiento:</strong> Dentro de los 5 GB mensuales del Free Tier de Cloud Storage.</li>
     <li><strong>Cómputo:</strong> Las primeras 2 millones de ejecuciones mensuales de Cloud Functions son gratuitas.</li>
     <li><strong>Consultas:</strong> BigQuery incluye 10 GB de almacenamiento y 1 TB de procesamiento de consultas gratuito mensual.</li>
-    <li><strong>Inferencia:</strong> Gemini 1.5 Flash en Vertex AI tiene un coste inferior a $0.05 USD por cada 500 comprobantes procesados, cubierto por los créditos iniciales de Google Cloud.</li>
+    <li><strong>Inferencia:</strong> Gemini 2.5 Flash en Vertex AI tiene un coste inferior a $0.05 USD por cada 500 comprobantes procesados, cubierto por los créditos iniciales de Google Cloud.</li>
   </ul>
+
+  <h2>7. Evidencia de Ejecución en Producción (Prueba E2E)</h2>
+  <p>
+    Se ejecutó una prueba de extremo a extremo subiendo el comprobante <code>ticket_restaurante_001.jpg</code> a Cloud Storage. El flujo se activó reactivamente mediante Eventarc y persistió exitosamente en BigQuery:
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Atributo</th>
+        <th>Valor Extraído por el Modelo y Almacenado en BigQuery</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Fecha de Gasto</strong></td>
+        <td><code>2026-09-18</code></td>
+      </tr>
+      <tr>
+        <td><strong>Comercio</strong></td>
+        <td><code>RESTAURANTE EL BUEN SABOR</code></td>
+      </tr>
+      <tr>
+        <td><strong>Categoría Asignada</strong></td>
+        <td><code>Alimentacion</code></td>
+      </tr>
+      <tr>
+        <td><strong>Moneda</strong></td>
+        <td><code>PEN</code></td>
+      </tr>
+      <tr>
+        <td><strong>Monto Total Facturado</strong></td>
+        <td><code>S/ 45.00</code></td>
+      </tr>
+      <tr>
+        <td><strong>Impuesto Desglosado (IGV 18%)</strong></td>
+        <td><code>S/ 6.86</code></td>
+      </tr>
+      <tr>
+        <td><strong>Confianza del Modelo</strong></td>
+        <td><code>0.95</code> (95%)</td>
+      </tr>
+      <tr>
+        <td><strong>URI de Auditoría en GCS</strong></td>
+        <td><code>gs://gcp-expense-darv-6849-gastos-raw/inbox/ticket_restaurante_001.jpg</code></td>
+      </tr>
+    </tbody>
+  </table>
 
   <div class="footer">
     Proyecto Final de Google Cloud Platform • Entregable Académico y Profesional
