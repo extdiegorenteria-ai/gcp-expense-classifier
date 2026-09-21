@@ -127,7 +127,7 @@ HTML_CONTENT = """<!DOCTYPE html>
 
   <div class="meta-box">
     <strong>Repositorio GitHub con código e IaC:</strong> 
-    <a href="https://github.com/tu-usuario/gcp-expense-classifier" style="color: #1a73e8; text-decoration: none;">https://github.com/tu-usuario/gcp-expense-classifier</a><br>
+    <a href="https://github.com/extdiegorenteria-ai/gcp-expense-classifier" style="color: #1a73e8; text-decoration: none;">https://github.com/extdiegorenteria-ai/gcp-expense-classifier</a><br>
     <strong>Arquitectura:</strong> 100% Serverless en GCP (Storage, Cloud Functions, Vertex AI, BigQuery, Looker Studio)
   </div>
 

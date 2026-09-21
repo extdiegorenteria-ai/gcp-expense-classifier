@@ -1,7 +1,7 @@
 # Pipeline Automatizado de Extracción y Clasificación de Gastos con GCP
 
 > **Proyecto Final - Fundamentos y Arquitectura en Google Cloud Platform**  
-> **Repositorio:** [https://github.com/tu-usuario/gcp-expense-classifier](https://github.com/tu-usuario/gcp-expense-classifier)  
+> **Repositorio:** [https://github.com/extdiegorenteria-ai/gcp-expense-classifier](https://github.com/extdiegorenteria-ai/gcp-expense-classifier)  
 > **Entregable:** Arquitectura, Documentación Técnica y Código de Despliegue (IaC)
 
 ---
