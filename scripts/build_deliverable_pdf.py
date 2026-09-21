@@ -179,7 +179,7 @@ HTML_CONTENT = """<!DOCTYPE html>
         <rect x="365" y="45" width="130" height="90" rx="8" fill="#ffffff" stroke="#34a853" stroke-width="2"/>
         <text x="430" y="75" text-anchor="middle" font-size="11" font-weight="700" fill="#1e8e3e">3. INTELIGENCIA</text>
         <text x="430" y="95" text-anchor="middle" font-size="10" font-weight="600" fill="#202124">Vertex AI</text>
-        <text x="430" y="112" text-anchor="middle" font-size="8.5" fill="#5f6368">Gemini 1.5 Flash</text>
+        <text x="430" y="112" text-anchor="middle" font-size="8.5" fill="#5f6368">Gemini 2.5 Flash</text>
       </g>
 
       <!-- Flecha a BigQuery -->
@@ -227,7 +227,7 @@ HTML_CONTENT = """<!DOCTYPE html>
         <td>Ejecución de lógica basada en microcontenedores sobre Cloud Run. Escala a cero, reduciendo costos a cero en reposo.</td>
       </tr>
       <tr>
-        <td><strong>Vertex AI (Gemini 1.5 Flash)</strong></td>
+        <td><strong>Vertex AI (Gemini 2.5 Flash)</strong></td>
         <td>Inferencia Multimodal</td>
         <td>Extracción precisa de datos textuales y numéricos desde imágenes o PDFs, asegurando esquema estricto (JSON Schema).</td>
       </tr>
@@ -255,7 +255,7 @@ HTML_CONTENT = """<!DOCTYPE html>
 
   <div class="step-card">
     <p><span class="step-number">Paso 1: Carga de Comprobante en Cloud Storage</span><br>
-    El usuario sube el archivo (imagen JPG/PNG o documento PDF) al bucket <code>gs://[PROJECT_ID]-gastos-raw/inbox/</code>. El bucket cuenta con reglas de ciclo de vida para optimizar costos de almacenamiento a largo plazo.</p>
+    El usuario sube el archivo (imagen JPG/PNG o documento PDF) al bucket <code>gs://gcp-expense-darv-6849-gastos-raw/inbox/</code>. El bucket cuenta con reglas de ciclo de vida para optimizar costos de almacenamiento a largo plazo.</p>
   </div>
 
   <div class="step-card">
@@ -265,7 +265,7 @@ HTML_CONTENT = """<!DOCTYPE html>
 
   <div class="step-card">
     <p><span class="step-number">Paso 3: Extracción Inteligente con Vertex AI</span><br>
-    La Cloud Function toma la referencia URI del archivo y realiza una consulta multimodal a <code>gemini-1.5-flash</code> con <em>Structured Outputs</em> activado. El modelo extrae con rigor la fecha, el comercio emisor, la categoría presupuestal, la moneda, el importe total y los impuestos.</p>
+    La Cloud Function toma la referencia URI del archivo y realiza una consulta multimodal a <code>gemini-2.5-flash</code> con <em>Structured Outputs</em> activado. El modelo extrae con rigor la fecha, el comercio emisor, la categoría presupuestal, la moneda, el importe total y los impuestos.</p>
   </div>
 
   <div class="step-card">

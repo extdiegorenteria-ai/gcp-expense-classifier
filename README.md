@@ -26,17 +26,17 @@ El flujo fue diseñado bajo un paradigma **100% Serverless** y orientado a event
 ```mermaid
 flowchart LR
     subgraph INGESTA["1. Capa de Ingesta"]
-        User["Usuario / Dispositivo"] -->|"Upload Recibo (PDF/JPG)"| GCS[("Cloud Storage\nbucket-gastos-raw")]
+        User["Usuario / Dispositivo"] -->|"Upload Recibo (PDF/JPG)"| GCS[("Cloud Storage\ngcp-expense-darv-6849-gastos-raw")]
     end
 
     subgraph COMPUTO["2. Cómputo e Inferencia"]
         GCS -->|"Evento: object.v1.finalized"| Eventarc["Eventarc / PubSub"]
         Eventarc -->|"Trigger HTTP"| GCF["Cloud Functions (2nd Gen)\nRuntime Python 3.11"]
-        GCF <-->|"Structured Prompting\n(JSON Schema)"| Vertex["Vertex AI\nGemini 1.5 Flash"]
+        GCF <-->|"Structured Prompting\n(JSON Schema)"| Vertex["Vertex AI\nGemini 2.5 Flash"]
     end
 
     subgraph ANALITICA["3. Almacén de Datos"]
-        GCF -->|"Streaming Insert"| BQ[("BigQuery\ntabla: gastos_clasificados")]
+        GCF -->|"Streaming Insert"| BQ[("BigQuery\ngastos.gastos_clasificados")]
     end
 
     subgraph CONSUMO["4. Visualización"]
@@ -67,13 +67,13 @@ Cumpliendo con la consigna de emplear más de 3 servicios nativos de GCP, la arq
 ## 4. Descripción Paso a Paso de la Solución
 
 1. **Ingesta del Documento:**
-   El usuario o aplicación móvil deposita el archivo del comprobante (fotografía en `.jpeg`/`.png` o documento `.pdf`) en el bucket de Cloud Storage `gs://[PROJECT_ID]-gastos-raw/inbox/`.
+   El usuario o aplicación móvil deposita el archivo del comprobante (fotografía en `.jpeg`/`.png` o documento `.pdf`) en el bucket de Cloud Storage `gs://gcp-expense-darv-6849-gastos-raw/inbox/`.
 
 2. **Detección y Disparo Reactivo:**
    Cloud Storage emite una notificación de evento `google.cloud.storage.object.v1.finalized` a través de **Eventarc**. Este evento despierta inmediatamente a la **Cloud Function (2nd Gen)** pasando los metadatos del archivo.
 
 3. **Inferencia Multimodal con Vertex AI:**
-   La función lee el archivo desde el bucket en memoria temporal y realiza una invocación a la API de **Vertex AI** utilizando el modelo `gemini-1.5-flash`. Se le provee un *System Instruction* y un esquema JSON estricto para extraer:
+   La función lee el archivo desde el bucket en memoria temporal y realiza una invocación a la API de **Vertex AI** utilizando el modelo `gemini-2.5-flash`. Se le provee un *System Instruction* y un esquema JSON estricto para extraer:
    - `fecha_emision` (YYYY-MM-DD)
    - `nombre_comercio` (Texto estandarizado)
    - `categoria` (`Alimentacion`, `Transporte`, `Servicios`, `Salud`, `Educacion`, `Ocio`, `Otros`)
@@ -98,7 +98,7 @@ Dataset: `gastos`
 Tabla: `gastos_clasificados` (Particionada por `fecha_gasto` diaria)
 
 ```sql
-CREATE TABLE IF NOT EXISTS `[PROJECT_ID].gastos.gastos_clasificados` (
+CREATE TABLE IF NOT EXISTS `gcp-expense-darv-6849.gastos.gastos_clasificados` (
   id_transaccion STRING OPTIONS(description="Identificador único UUID"),
   fecha_gasto DATE OPTIONS(description="Fecha de emisión del comprobante"),
   comercio STRING OPTIONS(description="Razón social o nombre comercial"),

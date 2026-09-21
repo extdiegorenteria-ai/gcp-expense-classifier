@@ -206,6 +206,28 @@ resource "google_storage_bucket_iam_member" "storage_viewer" {
   member = "serviceAccount:${google_service_account.function_sa.email}"
 }
 
+# Service Agent de Eventarc y GCS para disparar triggers
+data "google_project" "current_project" {
+  project_id = var.project_id
+}
+
+data "google_storage_project_service_account" "gcs_account" {
+  project    = var.project_id
+  depends_on = [google_project_service.gcp_services]
+}
+
+resource "google_project_iam_member" "gcs_pubsub_publisher" {
+  project = var.project_id
+  role    = "roles/pubsub.publisher"
+  member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
+}
+
+resource "google_project_iam_member" "eventarc_service_agent" {
+  project = var.project_id
+  role    = "roles/eventarc.serviceAgent"
+  member  = "serviceAccount:service-${data.google_project.current_project.number}@gcp-sa-eventarc.iam.gserviceaccount.com"
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # 5. CÓMPUTO SERVERLESS (CLOUD FUNCTIONS 2ND GEN + EVENTARC)
 # ---------------------------------------------------------------------------------------------------------------------
@@ -253,6 +275,8 @@ resource "google_cloudfunctions2_function" "expense_classifier_fn" {
     google_project_service.gcp_services,
     google_storage_bucket_iam_member.storage_viewer,
     google_project_iam_member.bigquery_editor,
-    google_project_iam_member.vertex_ai_user
+    google_project_iam_member.vertex_ai_user,
+    google_project_iam_member.eventarc_service_agent,
+    google_project_iam_member.gcs_pubsub_publisher
   ]
 }

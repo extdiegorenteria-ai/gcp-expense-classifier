@@ -97,9 +97,9 @@ def procesar_comprobante(cloud_event: CloudEvent) -> None:
     gcs_uri = f"gs://{bucket_name}/{file_name}"
 
     try:
-        # 1. Cargar el modelo multimodal Gemini 1.5 Flash con Structured Outputs
+        # 1. Cargar el modelo multimodal Gemini 2.5 Flash con Structured Outputs
         model = GenerativeModel(
-            model_name="gemini-1.5-flash-001",
+            model_name="gemini-2.5-flash",
             system_instruction=[
                 "Eres un auditor y contador experto. Tu tarea es analizar comprobantes de pago,",
                 "facturas, boletas y tickets (en imagen o PDF) para extraer con total precisión los datos",
